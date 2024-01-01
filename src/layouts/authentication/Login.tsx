@@ -12,25 +12,22 @@ export const Login = () =>{
 
         const url = "http://localhost:8080/login";
         const headers = new Headers();
-        headers.append('Content-Type', 'application/x-www-form-urlencoded');
-        // headers.append('Authorization', 'Basic ' + btoa(username + ":" + password));
-            
+        // headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', 'Basic ' + btoa(username + ":" + password));
+        
+        console.log(headers.get("Authorization"));
+        
         fetch(url, {
         method:'POST',
         headers: headers,
-        body: new URLSearchParams({
-            username,
-            password
-            })
         })
         .then((response)=>{
-            console.log(response);
+            const autherizationHeader = response.headers.get("Authorization");
+            sessionStorage.setItem("Jwt Token", autherizationHeader == null ? "" : autherizationHeader);
         })
         .catch((error:string)=>{
             console.log(error);
         })
-
-        console.log(username, password)
 
     }
 

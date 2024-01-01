@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import {Book} from '../../../models/Book';
 import { LoadingSpinner } from '../../utils/LoadingSpinner';
 import { Link } from 'react-router-dom';
+import { jwtIncludedHeader } from '../../utils/basicHeaders';
 
 
 export const Carousel = () =>{
@@ -18,7 +19,18 @@ export const Carousel = () =>{
             const baseUrl = "http://localhost:8080/api/books";
             const url     = `${baseUrl}?page=1&size=9`;
 
-            const response = await fetch(url);
+            const jwtToken = jwtIncludedHeader.get('Authorization');
+
+            const response = await fetch(url, {
+                method: 'GET', // or 'POST', 'PUT', etc.
+                headers: {
+                  'Authorization' : jwtToken==null ? "" : jwtToken ,
+                  'Content-Type': 'application/json',
+                  // Add other headers as needed
+                },
+                // Include request body if needed
+                // body: JSON.stringify({ key: 'value' }),
+              });
             
             if(!response.ok){
                 throw new Error("Something went wrong");
