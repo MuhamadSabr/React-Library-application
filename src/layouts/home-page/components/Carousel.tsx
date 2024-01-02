@@ -2,11 +2,21 @@ import {CarouselItem} from './CarouselItem';
 import {useEffect, useState} from 'react';
 import {Book} from '../../../models/Book';
 import { LoadingSpinner } from '../../utils/LoadingSpinner';
-import { Link } from 'react-router-dom';
-import { jwtIncludedHeader } from '../../utils/basicHeaders';
+import { Link, useNavigate } from 'react-router-dom';
+import { authenticated, getToken } from '../../utils/Authenticated';
+
 
 
 export const Carousel = () =>{
+
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if (!authenticated()){
+            navigate("/login")           
+        }
+    })
+
 
     const [books, setBooks] = useState<Book[]> ([]);
     const [isLoading, setIsLoading] = useState<boolean> (true);
@@ -19,22 +29,16 @@ export const Carousel = () =>{
             const baseUrl = "http://localhost:8080/api/books";
             const url     = `${baseUrl}?page=1&size=9`;
 
-            const jwtToken = jwtIncludedHeader.get('Authorization');
+
+            const jwtToken = getToken();
 
             const response = await fetch(url, {
-                method: 'GET', // or 'POST', 'PUT', etc.
+                method: 'GET',
                 headers: {
-                  'Authorization' : jwtToken==null ? "" : jwtToken ,
+                  'Authorization' : `Bearer ${jwtToken}`,
                   'Content-Type': 'application/json',
-                  // Add other headers as needed
                 },
-                // Include request body if needed
-                // body: JSON.stringify({ key: 'value' }),
               });
-            
-            if(!response.ok){
-                throw new Error("Something went wrong");
-            }
 
             const responseJson = await response.json();
 
@@ -64,7 +68,8 @@ export const Carousel = () =>{
 
         fetchBooks().catch((errorMessage:string)=>{
             setIsLoading(false);
-            setHttpError(errorMessage);
+            setHttpError(errorMessage + ".\n" +
+                            "Pardon the interruption.");
         })
 
     }, []);
@@ -78,8 +83,8 @@ export const Carousel = () =>{
 
     if(httpError){
         return(
-            <div className='container d-flex m-5 justify-content-center align-items-center'>
-                <p>{httpError.toString()}</p>
+            <div className='container d-flex m-5 justify-content-center align-items-center shadow lead'>
+                <pre>{httpError.toString()}</pre>
             </div>
         );
     }

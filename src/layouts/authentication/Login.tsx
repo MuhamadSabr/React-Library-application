@@ -1,10 +1,16 @@
 import { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { authenticated, getToken } from "../utils/Authenticated";
 
 
 export const Login = () =>{
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [authResult, setAuthResult] = useState("");
+    const navigate =  useNavigate();
+
 
     const handleLogin = async (event:FormEvent, username:string, password:string) =>{
         
@@ -12,24 +18,32 @@ export const Login = () =>{
 
         const url = "http://localhost:8080/login";
         const headers = new Headers();
-        // headers.append('Content-Type', 'application/json');
         headers.append('Authorization', 'Basic ' + btoa(username + ":" + password));
         
-        console.log(headers.get("Authorization"));
         
         fetch(url, {
-        method:'POST',
-        headers: headers,
+            method:'POST',
+            headers: headers,
         })
         .then((response)=>{
             const autherizationHeader = response.headers.get("Authorization");
-            sessionStorage.setItem("Jwt Token", autherizationHeader == null ? "" : autherizationHeader);
+            if(autherizationHeader!==null){
+                sessionStorage.setItem("JWT Token", autherizationHeader);
+            }
+            setAuthResult("Success");
         })
-        .catch((error:string)=>{
+        .catch((error:Error)=>{
             console.log(error);
+            setAuthResult("Failed for " + error)
         })
 
     }
+
+    useEffect(()=>{
+        if(authenticated()){
+            navigate("/");
+        }
+    }, [authResult])
 
 
     return(

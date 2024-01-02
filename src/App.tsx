@@ -8,6 +8,7 @@ import { SearchBooksPage } from './layouts/search-books/SearchBooksPage';
 import { BookCheckoutPage } from './layouts/checkout-books/BookCheckoutPage';
 import { Login } from './layouts/authentication/Login';
 import { PageNotFound } from './layouts/exceptions/PageNotFound';
+import { Logout } from './layouts/authentication/Logout';
 
 export const App = () => {
   return (
@@ -21,6 +22,7 @@ export const App = () => {
           <Route path='/search' element={<SearchBooksPage/>}></Route>
           <Route path='/checkout/:bookId' element={<BookCheckoutPage/>}></Route>
           <Route path='/login' element={<Login/>}></Route>
+          <Route path='/Logout' element={<Logout/>}></Route>
           <Route path="*" element={<PageNotFound/>}></Route>
         </Routes>
       </div>
