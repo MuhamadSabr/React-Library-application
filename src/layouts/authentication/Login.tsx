@@ -2,6 +2,7 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { authenticated, getToken } from "../utils/Authenticated";
+import { Console } from "console";
 
 
 export const Login = () =>{
@@ -33,7 +34,7 @@ export const Login = () =>{
             setAuthResult("Success");
         })
         .catch((error:Error)=>{
-            console.log(error);
+            console.log("Failed for " + error);
             setAuthResult("Failed for " + error)
         })
 

@@ -1,7 +1,26 @@
-import { NavLink } from "react-router-dom";
-import { HomePage } from "./home-page/HomePage";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { authenticated } from "./utils/Authenticated";
+import { useEffect, useState } from "react";
+
 
 export const Navbar = ()=>{
+
+    const [auth, setAuth] = useState<boolean>(authenticated());
+    const location = useLocation();
+
+    const handleLogout = () =>{
+        const userConfirmed = window.confirm("Are you sure you want to logout?");
+        if(userConfirmed){
+            sessionStorage.clear();
+            setAuth(false);
+        }
+    }
+
+    useEffect(()=>{
+        setAuth(authenticated());
+    }, [location.pathname, auth])
+
+
     return(
         <nav className="navbar navbar-expand-lg  main-color py-3 bg-body-tertiary" data-bs-theme='dark'>
             <div className="container-fluid">
@@ -20,9 +39,15 @@ export const Navbar = ()=>{
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto">
-                    <li className="nav-item m-1">
-                            <a type="button" className="btn btn-outline-light" href="#">Sign In</a>
-                        </li>
+                        {
+                            auth ?
+                            <li className="nav-item m-1">
+                                <button type="button" className="btn btn-outline-light" onClick={handleLogout}>Log out</button>
+                            </li> :
+                                <li className="nav-item m-1">
+                                    <Link type="button" className="btn btn-outline-light" to="/login">Log in</Link>
+                                </li>
+                        }
                     </ul>
                 </div>
             </div>

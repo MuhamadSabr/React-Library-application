@@ -7,7 +7,6 @@ export const Logout = () =>{
 
     useEffect(()=>{
         sessionStorage.clear();
-        navigate("/login");
     })
 
     return(
