@@ -9,15 +9,6 @@ import { authenticated, getToken } from '../../utils/Authenticated';
 
 export const Carousel = () =>{
 
-    const navigate = useNavigate();
-
-    useEffect(()=>{
-        if (!authenticated()){
-            navigate("/login")           
-        }
-    })
-
-
     const [books, setBooks] = useState<Book[]> ([]);
     const [isLoading, setIsLoading] = useState<boolean> (true);
     const [httpError, setHttpError] = useState<string> ();
@@ -29,13 +20,10 @@ export const Carousel = () =>{
             const baseUrl = "http://localhost:8080/api/books";
             const url     = `${baseUrl}?page=1&size=9`;
 
-
-            const jwtToken = getToken();
-
+            
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
-                  'Authorization' : `Bearer ${jwtToken}`,
                   'Content-Type': 'application/json',
                 },
               });

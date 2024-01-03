@@ -46,7 +46,7 @@ export const BookCheckoutPage = () =>{
             setIsLoading(false);
         })
 
-    })
+    },[])
 
 
     const [isReviewLoading, setReviewIsLoading] = useState<boolean> (true);
