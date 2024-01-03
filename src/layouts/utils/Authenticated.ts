@@ -1,7 +1,6 @@
 export const authenticated = () : boolean => {
 
     const jwtToken = sessionStorage.getItem("JWT Token");
-
     
     if(jwtToken===null){
         return false;
@@ -54,4 +53,3 @@ const refreshToken = async () =>{
         console.log("Failed for " + error);
     })
 }
-

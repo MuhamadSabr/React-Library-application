@@ -1,24 +1,27 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { authenticated } from "./utils/Authenticated";
-import { useEffect, useState } from "react";
+import { useEffect, createContext } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
+export const AuthContext = createContext(authenticated());
 
 export const Navbar = ()=>{
 
-    const [auth, setAuth] = useState<boolean>(authenticated());
+    const {isAuthenticated, setAuthenticated} = useAuth();
     const location = useLocation();
+
 
     const handleLogout = () =>{
         const userConfirmed = window.confirm("Are you sure you want to logout?");
         if(userConfirmed){
             sessionStorage.clear();
-            setAuth(false);
+            setAuthenticated(false);
         }
     }
 
     useEffect(()=>{
-        setAuth(authenticated());
-    }, [location.pathname, auth])
+        setAuthenticated(authenticated());
+    }, [location.pathname, isAuthenticated])
 
 
     return(
@@ -40,7 +43,7 @@ export const Navbar = ()=>{
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         {
-                            auth ?
+                            isAuthenticated ?
                             <li className="nav-item m-1">
                                 <button type="button" className="btn btn-outline-light" onClick={handleLogout}>Log out</button>
                             </li> :

@@ -20,7 +20,7 @@ export const Carousel = () =>{
             const baseUrl = "http://localhost:8080/api/books";
             const url     = `${baseUrl}?page=1&size=9`;
 
-            
+
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -114,7 +114,7 @@ export const Carousel = () =>{
                              alt="book" width='151' height='233'></img>
                             <h6 className="mt-2">{books[0].title}</h6>
                             <p>{books[0].author}</p>
-                            <a className="btn main-color text-white" href="#">Reserve</a>
+                            <Link className="btn btn-primary main-color text-white" to={`/checkout/${books[0].id}`}>Reserve</Link>
                         </div>
                     </div>
                 </div>
