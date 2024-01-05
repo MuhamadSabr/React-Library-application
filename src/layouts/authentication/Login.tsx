@@ -2,7 +2,6 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { authenticated, getToken } from "../utils/Authenticated";
-import { Console } from "console";
 
 
 export const Login = () =>{
@@ -42,7 +41,8 @@ export const Login = () =>{
 
     useEffect(()=>{
         if(authenticated()){
-            navigate("/");
+            const path = sessionStorage.getItem("redirectPath");
+            navigate(path===null ? "/" : path);
         }
     }, [authResult])
 

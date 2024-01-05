@@ -14,7 +14,7 @@ export const Navbar = ()=>{
     const handleLogout = () =>{
         const userConfirmed = window.confirm("Are you sure you want to logout?");
         if(userConfirmed){
-            sessionStorage.clear();
+            sessionStorage.removeItem("JWT Token");
             setAuthenticated(false);
         }
     }
@@ -48,7 +48,7 @@ export const Navbar = ()=>{
                                 <button type="button" className="btn btn-outline-light" onClick={handleLogout}>Log out</button>
                             </li> :
                                 <li className="nav-item m-1">
-                                    <Link type="button" className="btn btn-outline-light" to="/login">Log in</Link>
+                                    <Link type="button" className="btn btn-outline-light" to="/login">Log In</Link>
                                 </li>
                         }
                     </ul>

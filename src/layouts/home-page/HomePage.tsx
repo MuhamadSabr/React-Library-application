@@ -5,6 +5,9 @@ import { LibraryServices } from './components/LibraryServices';
 
 
 export const HomePage = ()=>{
+
+    sessionStorage.setItem("redirectPath", "/")
+
     return(
         <>
             <ExploreTopBooks />

@@ -15,7 +15,7 @@ export const LibraryServices = ()=>{
                         isAuthenticated ?
                         <Link type="button" to="#" className="btn btn-primary main-color text-white btn-lg">Library Service</Link>
                         :
-                        <Link type="button" to="/login" className="btn btn-primary main-color text-white btn-lg">Log in</Link>
+                        <Link type="button" to="/login" className="btn btn-primary main-color text-white btn-lg">Log In</Link>
                     }
                 </div>
                 <div className="col-4 shadow-lg lost-image"></div>

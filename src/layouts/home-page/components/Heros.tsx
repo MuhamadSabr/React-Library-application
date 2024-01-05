@@ -23,7 +23,7 @@ export const Heros = () =>{
                             isAuthenticated ?
                             <Link type="button" className="btn btn-primary main-color btn-lg text-white" to="/search">Explore Top Books</Link>
                             :
-                            <Link type="button" className="btn btn-primary main-color btn-lg text-white" to="/login">Log in</Link>
+                            <Link type="button" className="btn btn-primary main-color btn-lg text-white" to="/login">Log In</Link>
                         }
                     </div>
                 </div>
@@ -51,7 +51,12 @@ export const Heros = () =>{
                             Whether it is to learn a new skill or grow within one,
                             we will be able to to provide the top content for you!
                         </p>
-                        <a type="button" className="btn main-color btn-lg text-white" href="#">Sign up</a>
+                        {
+                            isAuthenticated ?
+                            <Link type="button" className="btn btn-primary main-color btn-lg text-white" to="/search">Explore Top Books</Link>
+                            :
+                            <Link type="button" className="btn btn-primary main-color btn-lg text-white" to="/login">Log In</Link>
+                        }
                     </div>
                 </div>
 

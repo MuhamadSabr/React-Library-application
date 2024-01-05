@@ -5,6 +5,8 @@ import { ReviewStars } from "../utils/ReviewStars";
 import { Checkout } from "./components/Checkout";
 import { Review } from "../../models/Review";
 import { ReviewComponent } from "../utils/ReviewComponent";
+import { getToken } from "../utils/Authenticated";
+import { useAuth } from "../../contexts/AuthContext";
 
 
 
@@ -15,6 +17,21 @@ export const BookCheckoutPage = () =>{
     const [httpError, setHttpError] = useState<string> ();
 
     const bookId = window.location.pathname.split('/')[2];
+    sessionStorage.setItem("redirectPath", `/checkout/${bookId}`)
+
+    const [isReviewLoading, setReviewIsLoading] = useState<boolean> (true);
+    const [reviews, setReviews] = useState<Review[]> ([]);
+    const [averageRating, setAverageRating] = useState<number> (0);
+    const [averageStar, setAverageStar] = useState<number> (0);
+
+    const [currentCheckedOutBooks, setCurrentCheckedOutBooks] = useState(0);
+    const [isLoadingCurrentCheckedOutBooks, setIsLoadingCurrentCheckedOutBooks] = useState(true);
+    const {isAuthenticated} = useAuth();
+
+    const [isBookCheckedOutByUser, setIsBookCheckedOutByUser] = useState(false);
+    const [isLoadingBookCheckedOutByUser, setIsLoadingBookCheckedOutByUser] = useState(true);
+
+
 
     useEffect(()=>{
 
@@ -41,18 +58,14 @@ export const BookCheckoutPage = () =>{
 
         }
 
-        fetchBook().catch((error)=>{
-            setHttpError(error);
+        fetchBook().catch((error:Error)=>{
+            setHttpError("Failed to load book for reason : " + error.message);
             setIsLoading(false);
         })
 
-    },[])
+    },[bookId, isBookCheckedOutByUser])
 
 
-    const [isReviewLoading, setReviewIsLoading] = useState<boolean> (true);
-    const [reviews, setReviews] = useState<Review[]> ([]);
-    const [averageRating, setAverageRating] = useState<number> (0);
-    const [averageStar, setAverageStar] = useState<number> (0);
     
     useEffect(()=>{
 
@@ -97,16 +110,96 @@ export const BookCheckoutPage = () =>{
 
         }
 
-        fetchBookReview().catch((error:string)=>{
+        fetchBookReview().catch((error:Error)=>{
             setReviewIsLoading(false);
-            setHttpError(error);
+            setHttpError("Failed to load review for reason : " + error.message);
         })
 
-    }, [])
+    }, [bookId])
 
+
+
+    useEffect(()=>{
+
+        if(isAuthenticated){
+            const url = "http://localhost:8080/api/books/currentCheckedOutCountByUser";
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            headers.append("Authorization", `Bearer ${getToken()}`)
+
+            fetch(url,{
+                method: "GET",
+                headers: headers
+            })
+            .then((resonse)=> resonse.json())
+            .then((response)=>{
+                setCurrentCheckedOutBooks(response);
+                setIsLoadingCurrentCheckedOutBooks(false);
+            })
+            .catch((error:Error)=>{
+                setHttpError("Error loading current checkedout Books because : " + error.message);
+                setIsLoadingCurrentCheckedOutBooks(false);
+            })
+        }
+        else{
+            setCurrentCheckedOutBooks(0);
+            setIsLoadingCurrentCheckedOutBooks(false);
+        }
+        
+    },[currentCheckedOutBooks, isAuthenticated, isBookCheckedOutByUser])
+
+
+
+    useEffect(()=>{
+        if(isAuthenticated){
+            const url = `http://localhost:8080/api/books/isCheckedOutByUser/${bookId}`;
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            headers.append("Authorization", `Bearer ${getToken()}`)
+
+            fetch(url,{
+                method: "GET",
+                headers: headers
+            })
+            .then((resonse)=> resonse.json())
+            .then((response)=>{
+                setIsBookCheckedOutByUser(response);
+                setIsLoadingBookCheckedOutByUser(false);
+            })
+            .catch((error:Error)=>{
+                setHttpError("Error loading, is book already checkedout because : " + error.message);
+                setIsLoadingBookCheckedOutByUser(false);
+            })
+        }
+        else{
+            setIsBookCheckedOutByUser(false);
+            setIsLoadingBookCheckedOutByUser(false);
+        }
+    }, [isAuthenticated, isBookCheckedOutByUser, bookId, isBookCheckedOutByUser])
+
+
+
+    const checkoutBook = async() =>{
+        const url = `http://localhost:8080/api/books/checkout/${bookId}`;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json")
+        headers.append("Authorization", `Bearer ${getToken()}`)
+
+        fetch(url,{
+            method: "POST",
+            headers: headers
+        })
+        .then((resonse)=> resonse.json())
+        .then((response)=>{
+            setIsBookCheckedOutByUser(true);
+        })
+        .catch((error:Error)=>{
+            setHttpError("Error Checking book, because : " + error.message);
+        })
+    }
  
 
-    if(isLoading || isReviewLoading){
+    if(isLoading || isReviewLoading || isLoadingCurrentCheckedOutBooks || isLoadingBookCheckedOutByUser){
         return(
             <LoadingSpinner/>
         );
@@ -141,7 +234,9 @@ export const BookCheckoutPage = () =>{
                     }
                 </div>
                 
-                < Checkout copies={book.copies} copiesAvailable={book.copiesAvailable} />
+                < Checkout copies={book.copies} copiesAvailable={book.copiesAvailable} currentCheckedOutBooks={currentCheckedOutBooks}
+                isBookCheckedOutByUser={isBookCheckedOutByUser} isAuthenticated={isAuthenticated}
+                checkoutBook={checkoutBook}/>
 
             </div>
             <hr/>
