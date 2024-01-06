@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
+import { LeaveReview } from "../../review/LeaveReview";
+
 
 export const Checkout:React.FC<{copies:number|undefined; copiesAvailable:number|undefined; currentCheckedOutBooks:number;
-    isBookCheckedOutByUser:boolean; isAuthenticated:boolean; checkoutBook:()=>void}> = (props) =>{
+    isBookCheckedOutByUser:boolean; isAuthenticated:boolean; checkoutBook:()=>void; hasUserLeftReview:boolean;
+    submitReview:(rating:number, reviewDescription:string)=>void}> = (props) =>{
 
 
     return(
@@ -32,7 +35,18 @@ export const Checkout:React.FC<{copies:number|undefined; copiesAvailable:number|
                             }
                             <hr></hr>
                             <p>This number can change until placing order has been complete</p>
-                            <p className="mt-3">Sign in to be able to leave a review.</p>
+                            {
+                                props.isAuthenticated ?
+                                props.hasUserLeftReview ?
+                                <p><b>Thank you for your review</b></p>
+                                :
+                                <LeaveReview submitReview={props.submitReview}/>
+                                :
+                                <div>
+                                    <div className="ps-4 pe-4"><hr></hr></div>
+                                    <p className="mt-3 fw-bold">Sign in to be able to leave a review.</p>
+                                </div>
+                            }
                         </div>
                 </div>
     );

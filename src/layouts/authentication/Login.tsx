@@ -1,8 +1,8 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { authenticated, getToken } from "../utils/Authenticated";
-
+import { getToken } from "../utils/Authenticated";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const Login = () =>{
 
@@ -10,6 +10,8 @@ export const Login = () =>{
     const [password, setPassword] = useState("");
     const [authResult, setAuthResult] = useState("");
     const navigate =  useNavigate();
+
+    const {isAuthenticated, setAuthenticated} = useAuth();
 
 
     const handleLogin = async (event:FormEvent, username:string, password:string) =>{
@@ -29,6 +31,7 @@ export const Login = () =>{
             const autherizationHeader = response.headers.get("Authorization");
             if(autherizationHeader!==null){
                 sessionStorage.setItem("JWT Token", autherizationHeader);
+                setAuthenticated(true);
             }
             setAuthResult("Success");
         })
@@ -40,11 +43,11 @@ export const Login = () =>{
     }
 
     useEffect(()=>{
-        if(authenticated()){
+        if(isAuthenticated){
             const path = sessionStorage.getItem("redirectPath");
             navigate(path===null ? "/" : path);
         }
-    }, [authResult])
+    }, [isAuthenticated])
 
 
     return(

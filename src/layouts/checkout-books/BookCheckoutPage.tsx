@@ -1,36 +1,45 @@
 import { useEffect, useState } from "react";
 import { Book } from "../../models/Book";
 import { LoadingSpinner } from "../utils/LoadingSpinner";
-import { ReviewStars } from "../utils/ReviewStars";
+import { ReviewStars } from "../review/ReviewStars";
 import { Checkout } from "./components/Checkout";
 import { Review } from "../../models/Review";
-import { ReviewComponent } from "../utils/ReviewComponent";
+import { ReviewComponent } from "../review/ReviewComponent";
 import { getToken } from "../utils/Authenticated";
 import { useAuth } from "../../contexts/AuthContext";
-
+import { ReviewDTO } from "../../models/ReviewDTO";
 
 
 export const BookCheckoutPage = () =>{
 
+    //Book State
     const [book, setBook] = useState<Book> (new Book(-1, "", "", "", -1, -1, "", ""));
     const [isLoading, setIsLoading] = useState<boolean> (true);
     const [httpError, setHttpError] = useState<string> ();
 
+
+    //Getting the bookId from the url, and saving the current url in session storage.
     const bookId = window.location.pathname.split('/')[2];
     sessionStorage.setItem("redirectPath", `/checkout/${bookId}`)
 
+
+    //Review State
     const [isReviewLoading, setReviewIsLoading] = useState<boolean> (true);
     const [reviews, setReviews] = useState<Review[]> ([]);
     const [averageRating, setAverageRating] = useState<number> (0);
     const [averageStar, setAverageStar] = useState<number> (0);
+    const [hasUserLeftReview, setHasUserLeftReview] = useState(false);
+    const [isLoadingHasUserLeftReview, setIsLoadingHasUserLeftReview] = useState(true);
 
+
+    //Checkout State
     const [currentCheckedOutBooks, setCurrentCheckedOutBooks] = useState(0);
     const [isLoadingCurrentCheckedOutBooks, setIsLoadingCurrentCheckedOutBooks] = useState(true);
-    const {isAuthenticated} = useAuth();
-
     const [isBookCheckedOutByUser, setIsBookCheckedOutByUser] = useState(false);
     const [isLoadingBookCheckedOutByUser, setIsLoadingBookCheckedOutByUser] = useState(true);
 
+
+    const {isAuthenticated} = useAuth();
 
 
     useEffect(()=>{
@@ -115,7 +124,7 @@ export const BookCheckoutPage = () =>{
             setHttpError("Failed to load review for reason : " + error.message);
         })
 
-    }, [bookId])
+    }, [bookId, hasUserLeftReview])
 
 
 
@@ -179,6 +188,35 @@ export const BookCheckoutPage = () =>{
 
 
 
+    useEffect(()=>{
+        if(isAuthenticated){
+            const url = `http://localhost:8080/api/reviews/hasUserLeftReview/${bookId}`;
+            const headers = new Headers();
+            headers.append("Content-Type", "application/json")
+            headers.append("Authorization", `Bearer ${getToken()}`)
+
+            fetch(url,{
+                method: "GET",
+                headers: headers
+            })
+            .then((resonse)=> resonse.json())
+            .then((response)=>{
+                setHasUserLeftReview(response);
+                setIsLoadingHasUserLeftReview(false);
+            })
+            .catch((error:Error)=>{
+                setHttpError("Error loading, is book already checkedout because : " + error.message);
+                setIsLoadingHasUserLeftReview(false);
+            })
+        }
+        else{
+            setHasUserLeftReview(false);
+            setIsLoadingHasUserLeftReview(false);
+        }
+    }, [isAuthenticated, bookId])
+
+
+
     const checkoutBook = async() =>{
         const url = `http://localhost:8080/api/books/checkout/${bookId}`;
         const headers = new Headers();
@@ -197,9 +235,36 @@ export const BookCheckoutPage = () =>{
             setHttpError("Error Checking book, because : " + error.message);
         })
     }
+
+
+
+    const submitReview = async(rating:number, reviewDescription:string) =>{
+        const url = `http://localhost:8080/api/reviews/add`;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json")
+        headers.append("Authorization", `Bearer ${getToken()}`)
+
+        const reviewDto = new ReviewDTO(rating, +bookId, reviewDescription);
+
+        fetch(url,{
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(reviewDto)
+        })
+        .then((resonse)=> resonse.text())
+        .then((response)=>{
+            if(response==='Success'){
+            setHasUserLeftReview(true);
+            }
+        })
+        .catch((error:Error)=>{
+            setHttpError("Error submitting review, because : " + error.message);
+        })
+    }
  
 
-    if(isLoading || isReviewLoading || isLoadingCurrentCheckedOutBooks || isLoadingBookCheckedOutByUser){
+
+    if(isLoading || isReviewLoading || isLoadingCurrentCheckedOutBooks || isLoadingBookCheckedOutByUser || isLoadingHasUserLeftReview){
         return(
             <LoadingSpinner/>
         );
@@ -236,7 +301,8 @@ export const BookCheckoutPage = () =>{
                 
                 < Checkout copies={book.copies} copiesAvailable={book.copiesAvailable} currentCheckedOutBooks={currentCheckedOutBooks}
                 isBookCheckedOutByUser={isBookCheckedOutByUser} isAuthenticated={isAuthenticated}
-                checkoutBook={checkoutBook}/>
+                checkoutBook={checkoutBook} hasUserLeftReview={hasUserLeftReview}
+                submitReview={submitReview}/>
 
             </div>
             <hr/>
