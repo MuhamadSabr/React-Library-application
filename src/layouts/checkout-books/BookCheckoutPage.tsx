@@ -8,6 +8,8 @@ import { ReviewComponent } from "../review/ReviewComponent";
 import { getToken } from "../utils/Authenticated";
 import { useAuth } from "../../contexts/AuthContext";
 import { ReviewDTO } from "../../models/ReviewDTO";
+import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 
 export const BookCheckoutPage = () =>{
@@ -30,6 +32,12 @@ export const BookCheckoutPage = () =>{
     const [averageStar, setAverageStar] = useState<number> (0);
     const [hasUserLeftReview, setHasUserLeftReview] = useState(false);
     const [isLoadingHasUserLeftReview, setIsLoadingHasUserLeftReview] = useState(true);
+    const [totalNumberOfReviews, setTotalNumberOfReviews] = useState(0);
+
+    //See more review related states
+    const [currentSetOfReviews, setCurrentSetOfReviews] = useState(1);
+    const reviewNumberPerLoad = 5;
+    let [totalLoadedReviews, setTotalLoadedReviews] = useState(5);
 
 
     //Checkout State
@@ -90,6 +98,7 @@ export const BookCheckoutPage = () =>{
 
             const responseJson = await resonse.json();
             const loadedReviews = responseJson._embedded.reviews;
+            setTotalNumberOfReviews(responseJson.page.totalElements);
             const bookReviews:Review[] = [];
 
 
@@ -261,6 +270,53 @@ export const BookCheckoutPage = () =>{
             setHttpError("Error submitting review, because : " + error.message);
         })
     }
+
+
+
+    const loadReviews = async () =>{
+        const url = `http://localhost:8080/api/reviews/search/findByBookIdOrderByReviewDateDesc?bookId=${bookId}&page=${currentSetOfReviews}&size=${reviewNumberPerLoad}`;
+
+        const fetchBookReview = async () =>{
+
+            const resonse = await fetch(url);
+
+            if(!resonse.ok){
+                throw new Error("Something went wrong");
+            }
+
+            const responseJson = await resonse.json();
+            const loadedReviews = responseJson._embedded.reviews;
+            const reviewDiv = document.getElementById("reviewDiv")!;
+
+        let tempLoadedReviewsInLoop = 0;
+            for(const review of loadedReviews){
+                const rev = (new Review(
+                    review.id,
+                    review.userEmail,
+                    new Date(review.reviewDate),
+                    review.rating,
+                    review.bookId,
+                    review.reviewDescription
+                ));
+                const reviewContainer = document.createElement('div');
+                const root = createRoot(reviewContainer);
+                root.render(<ReviewComponent review={rev} key={rev.id} />);
+                reviewDiv.appendChild(reviewContainer);
+                tempLoadedReviewsInLoop += 1;
+            }
+            setTotalLoadedReviews(totalLoadedReviews+tempLoadedReviewsInLoop);
+        }
+
+        fetchBookReview().catch((error:Error)=>{
+            setHttpError("Failed to load review for reason : " + error.message);
+        })
+
+        setCurrentSetOfReviews(currentSetOfReviews+1);
+    }
+
+    const toTheTop = () =>{
+        window.scrollTo(0,0);
+    }
  
 
 
@@ -310,8 +366,8 @@ export const BookCheckoutPage = () =>{
             {   
                 reviews.length>0 ?
                 <div>
-                     <div className="row mt-4">
-                        <p className="text-info fs-4">What other readers think of this book!?</p>
+                     <div id="reviewDiv" className="row mt-4">
+                        <p className="text-info fs-4">What other readers think of this book!? <em className="text-dark">{`(${totalNumberOfReviews} reviews)`}</em></p>
                         {
                             reviews.slice(0,5).map(review =>(
                             <ReviewComponent review={review} key={review.id} />
@@ -319,7 +375,14 @@ export const BookCheckoutPage = () =>{
                         }
                     </div>
                     <div>
-                        <button className="btn btn-outline-secondary ">See more reviews</button>
+                        {
+                            totalNumberOfReviews <=reviewNumberPerLoad ?
+                            <></> :
+                            totalLoadedReviews===totalNumberOfReviews ?
+                            <button className="btn btn-outline-secondary" onClick={()=>toTheTop()}>To the top of the page</button>
+                            :
+                            <button id="seeMoreBtn" onClick={()=>loadReviews()} className="btn btn-outline-secondary ">See More Reviews</button>
+                        }
                     </div>
                 </div> :
                 <div className="row mt-4">
