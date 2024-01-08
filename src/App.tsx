@@ -1,4 +1,4 @@
-import {Route, Routes} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import './App.css';
 import {Navbar} from './layouts/Navbar';
 import {Footer} from './layouts/Footer';
@@ -8,12 +8,18 @@ import { BookCheckoutPage } from './layouts/checkout-books/BookCheckoutPage';
 import { Login } from './layouts/authentication/Login';
 import { PageNotFound } from './layouts/exceptions/PageNotFound';
 import { Logout } from './layouts/authentication/Logout';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ShelfPage } from './layouts/shelf-page/ShelfPage';
 
 
 
 export const App = () => {
-
+ 
+  const PrivateRoute = () => {
+    const {isAuthenticated} = useAuth();
+    !isAuthenticated ? sessionStorage.setItem("redirectPath", "/ShelfPage") : sessionStorage.getItem("/redirectPath");
+    return isAuthenticated ? <ShelfPage /> : <Navigate to="/login" />;
+  }
 
 
   return (
@@ -27,6 +33,7 @@ export const App = () => {
             <Route path='/search' element={<SearchBooksPage/>}></Route>
             <Route path='/checkout/:bookId' element={<BookCheckoutPage/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
+            <Route path='/shelfPage' element={<PrivateRoute/>}></Route>
             <Route path='/Logout' element={<Logout/>}></Route>
             <Route path="*" element={<PageNotFound/>}></Route>
           </Routes>

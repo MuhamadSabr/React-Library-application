@@ -16,6 +16,7 @@ const getEnumKeyByValue = (categoryValue: string): Category|undefined => {
 
 export const SearchBooksPage = ()=>{
 
+    sessionStorage.setItem("redirectPath", "/search")
 
     const [books, setBooks] = useState<Book[]> ([]);
     const [isLoading, setIsLoading] = useState<boolean> (true);

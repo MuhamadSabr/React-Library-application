@@ -40,6 +40,12 @@ export const Navbar = ()=>{
                         <li className="nav-item">
                             <NavLink to="/search" className="nav-link">Search Books</NavLink>
                         </li>
+                        {
+                            isAuthenticated &&
+                            <li className="nav-itme">
+                                <NavLink to="/ShelfPage" className="nav-link">Shelf</NavLink>
+                            </li>
+                        }
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         {
