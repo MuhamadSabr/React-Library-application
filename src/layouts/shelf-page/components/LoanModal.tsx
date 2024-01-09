@@ -1,6 +1,8 @@
 import { ShelfCurrentLoans } from "../../../models/ShelfCurrentLoan";
 
-export const LoanModal: React.FC<{shelfLoan:ShelfCurrentLoans}> = (props) =>{
+export const LoanModal: React.FC<{shelfLoan:ShelfCurrentLoans; returnBook:(bookId:number)=>void; renewLoan:(bookId:number)=>void}> = (props) =>{
+
+    
 
     return(
         <div id={`modal${props.shelfLoan.book.id}`} className="modal fade">
@@ -40,12 +42,16 @@ export const LoanModal: React.FC<{shelfLoan:ShelfCurrentLoans}> = (props) =>{
                                 }
                             </div>
                             <div className="list-group">
-                                <button className="list-group-item list-group-item-action"data-bs-dismiss="modal">Return Book</button>
-                                <button className={props.shelfLoan.daysLeft<=0 ? "list-group-item disabled" : "list-group-item list-group-item-action"}
+                                <button onClick={()=>props.returnBook(props.shelfLoan.book.id)}
+                                className="list-group-item list-group-item-action"data-bs-dismiss="modal">
+                                    Return Book
+                                </button>
+                                <button onClick={()=>props.renewLoan(props.shelfLoan.book.id)}
+                                className={props.shelfLoan.daysLeft<=0 ? "list-group-item disabled" : "list-group-item list-group-item-action"}
                                 data-bs-dismiss="modal">
                                     {
                                         props.shelfLoan.daysLeft<=0 ?
-                                        "Over-due books cannot be renewd"
+                                        "Over-due books cannot be renewed"
                                         :
                                         "Renew Loan for Seven Days"
                                     }

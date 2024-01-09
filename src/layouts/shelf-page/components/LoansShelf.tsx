@@ -13,6 +13,7 @@ export const LoansShelf = () =>{
 
     const [loadedShelfCurrentLoans, setLoadedShelfCurrentLoans] = useState<ShelfCurrentLoans[]>();
     const [isLoadingCurrentLoans, setIsLoadingCurrentLoans] = useState(true);
+    const [reRenderLoanShelf, setReRenderLoanShelf] = useState(false);
 
 
     useEffect(()=>{
@@ -41,7 +42,7 @@ export const LoansShelf = () =>{
             })
             window.scrollTo(0,0);
         }
-    }, [isAuthenticated])
+    }, [isAuthenticated, reRenderLoanShelf])
 
 
 
@@ -57,6 +58,51 @@ export const LoansShelf = () =>{
                 <p>{httpError.toString()}</p>
             </div>
         );
+    }
+
+    const returnBook = async(bookId:number) =>{
+        const url = `http://localhost:8080/api/books/returnCheckedOutBook/${bookId}`;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json")
+        headers.append("Authorization", `Bearer ${getToken()}`)
+
+        fetch(url, {
+            method: "PUT",
+            headers: headers
+        })
+        .then((response)=> response.text())
+        .then((response)=>{
+            if(response!=='Success'){
+                setHttpError("Failed to return loan for reason : " + response);
+            }
+            setReRenderLoanShelf(!reRenderLoanShelf);
+        })
+        .catch((error:Error)=>{
+            setHttpError("Failed to return loan for reason : " + (error!=null ? error.message : ""))
+        })
+    }
+
+
+    const renewLoan = async(bookId:number) =>{
+        const url = `http://localhost:8080/api/books/renewCheckedOutBook/${bookId}`;
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json")
+        headers.append("Authorization", `Bearer ${getToken()}`)
+
+        fetch(url, {
+            method: "PUT",
+            headers: headers
+        })
+        .then((response)=> response.text())
+        .then((response)=>{
+            if(response!=='Success'){
+                setHttpError("Failed to renew loan for reason : " + response);
+            }
+            setReRenderLoanShelf(!reRenderLoanShelf);
+        })
+        .catch((error:Error)=>{
+            setHttpError("Failed to return loan for reason : " + (error!=null ? error.message : ""))
+        })
     }
 
 
@@ -98,7 +144,7 @@ export const LoansShelf = () =>{
                             </div>
                         </div>
                         <hr className="pt-2"></hr>
-                        <LoanModal shelfLoan={shelfLoan}/>
+                        <LoanModal shelfLoan={shelfLoan} returnBook={returnBook} renewLoan={renewLoan}/>
                     </div>
                 ))
             }
