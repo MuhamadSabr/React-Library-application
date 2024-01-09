@@ -3,8 +3,8 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { ShelfCurrentLoans } from "../../../models/ShelfCurrentLoan";
 import { LoadingSpinner } from "../../utils/LoadingSpinner";
 import { getToken } from "../../utils/Authenticated";
-import { BookCard } from "../../search-books/BookCard";
 import { Link } from "react-router-dom";
+import { LoanModal } from "./LoanModal";
 
 export const LoansShelf = () =>{
 
@@ -71,33 +71,34 @@ export const LoansShelf = () =>{
                         alt='Book' height={325} width={216}></img>
                         </div>
                         <div className="col-lg-6 pe-5 ps-5">
-                        <div className="card col-lg-8 mb-3 d-flex justify-content-end ms-auto">
-                            <div className="card-body">
-                                <h5 className="mt-1">Loan Options</h5>
-                                {
-                                    shelfLoan.daysLeft ===1 &&
-                                    <p className="text-success">Due today</p>
-                                }
-                                {
-                                    shelfLoan.daysLeft <=0 &&
-                                    <p className="text-danger">{shelfLoan.daysLeft} past due date</p>
-                                }
-                                {
-                                    shelfLoan.daysLeft >1 &&
-                                    <p className="text-secondary">{`Due in ${shelfLoan.daysLeft} days.`}</p>
-                                }
-                                <div className="list-group">
-                                    <button className="list-group-item list-group-item-action"
-                                    data-bs-toggle="modal" data-bs-target={`#modal${shelfLoan.book.id}`}>Manage Loan</button>
-                                    <Link to="/search" className="list-group-item list-group-item-action">Search more books</Link>
+                            <div className="card col-lg-8 mb-3 d-flex justify-content-end ms-auto">
+                                <div className="card-body">
+                                    <h5 className="mt-1">Loan Options</h5>
+                                    {
+                                        shelfLoan.daysLeft ===1 &&
+                                        <p className="text-success">Due today</p>
+                                    }
+                                    {
+                                        shelfLoan.daysLeft <=0 &&
+                                        <p className="text-danger">{shelfLoan.daysLeft} past due date</p>
+                                    }
+                                    {
+                                        shelfLoan.daysLeft >1 &&
+                                        <p className="text-secondary">{`Due in ${shelfLoan.daysLeft} days.`}</p>
+                                    }
+                                    <div className="list-group">
+                                        <button className="list-group-item list-group-item-action"
+                                        data-bs-toggle="modal" data-bs-target={`#modal${shelfLoan.book.id}`}>Manage Loan</button>
+                                        <Link to="/search" className="list-group-item list-group-item-action">Search more books</Link>
+                                    </div>
+                                    <hr></hr>
+                                    <p>Help others find their adventure by leaving a review</p>
+                                    <Link to={`/checkout/${shelfLoan.book.id}`} className="btn btn-primary">Leave a Review</Link>
                                 </div>
-                                <hr></hr>
-                                <p>Help others find their adventure by leaving a review</p>
-                                <Link to={`/checkout/${shelfLoan.book.id}`} className="btn btn-primary">Leave a Review</Link>
                             </div>
                         </div>
-                        </div>
                         <hr className="pt-2"></hr>
+                        <LoanModal shelfLoan={shelfLoan}/>
                     </div>
                 ))
             }
