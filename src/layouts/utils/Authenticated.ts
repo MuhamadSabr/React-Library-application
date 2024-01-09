@@ -1,7 +1,16 @@
-export const authenticated = () : boolean => {
+const jwtToken = sessionStorage.getItem("JWT Token");
 
-    const jwtToken = sessionStorage.getItem("JWT Token");
-    
+export const getUsername = ():string =>{
+    if(jwtToken===null){
+        return "";
+    }
+    const payloadBase64 = jwtToken.split('.')[1];
+    const decodedPayload = atob(payloadBase64);
+    const decodedPayloadToJson = JSON.parse(decodedPayload);
+    return decodedPayloadToJson.username;
+}
+
+export const authenticated = () : boolean => {
     if(jwtToken===null){
         return false;
     }
