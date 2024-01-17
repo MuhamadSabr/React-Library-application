@@ -8,7 +8,6 @@ import { ReviewComponent } from "../review/ReviewComponent";
 import { getToken } from "../utils/Authenticated";
 import { useAuth } from "../../contexts/AuthContext";
 import { ReviewDTO } from "../../models/ReviewDTO";
-import ReactDOM from "react-dom";
 import { createRoot } from "react-dom/client";
 
 
@@ -142,8 +141,8 @@ export const BookCheckoutPage = () =>{
         if(isAuthenticated){
             const url = "http://localhost:8080/api/books/currentCheckedOutCountByUser";
             const headers = new Headers();
-            headers.append("Content-Type", "application/json")
-            headers.append("Authorization", `Bearer ${getToken()}`)
+            headers.append("Content-Type", "application/json");
+            headers.append("Authorization", `Bearer ${getToken()}`);
 
             fetch(url,{
                 method: "GET",
@@ -227,6 +226,9 @@ export const BookCheckoutPage = () =>{
 
 
     const checkoutBook = async() =>{
+
+        
+
         const url = `http://localhost:8080/api/books/checkout/${bookId}`;
         const headers = new Headers();
         headers.append("Content-Type", "application/json")

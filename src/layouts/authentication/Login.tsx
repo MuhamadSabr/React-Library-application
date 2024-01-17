@@ -1,17 +1,19 @@
 import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { getToken } from "../utils/Authenticated";
 import { useAuth } from "../../contexts/AuthContext";
+import { LoadingSpinner } from "../utils/LoadingSpinner";
 
 export const Login = () =>{
 
+
+    //Login state
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [authResult, setAuthResult] = useState("");
     const navigate =  useNavigate();
-
     const {isAuthenticated, setAuthenticated} = useAuth();
+
 
 
     const handleLogin = async (event:FormEvent, username:string, password:string) =>{
@@ -21,7 +23,7 @@ export const Login = () =>{
         const url = "http://localhost:8080/login";
         const headers = new Headers();
         headers.append('Authorization', 'Basic ' + btoa(username + ":" + password));
-        
+        headers.append("X-XSRF-TOKEN", sessionStorage.getItem("XSRF-TOKEN")!);
         
         fetch(url, {
             method:'POST',
@@ -29,11 +31,13 @@ export const Login = () =>{
         })
         .then((response)=>{
             const autherizationHeader = response.headers.get("Authorization");
+            const xsrf = response.headers.get("X-XSRF-TOKEN");
             if(autherizationHeader!==null){
                 sessionStorage.setItem("JWT Token", autherizationHeader);
+                sessionStorage.setItem("XSRF-TOKEN", xsrf!);
                 setAuthenticated(true);
+                setAuthResult("Success");
             }
-            setAuthResult("Success");
         })
         .catch((error:Error)=>{
             console.log("Failed for " + error);

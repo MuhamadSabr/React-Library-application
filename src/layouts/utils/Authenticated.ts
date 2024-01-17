@@ -53,3 +53,14 @@ const refreshToken = async () =>{
         console.log("Failed for " + error);
     })
 }
+
+export const getUsername = ():string =>{
+    const jwtToken = sessionStorage.getItem("JWT Token");
+    if(jwtToken===null){
+        return "";
+    }
+    const payloadBase64 = jwtToken.split('.')[1];
+    const decodedPayload = atob(payloadBase64);
+    const decodedPayloadToJson = JSON.parse(decodedPayload);
+    return decodedPayloadToJson.username;
+}
