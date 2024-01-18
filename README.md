@@ -5,5 +5,6 @@ Uses React Router to establish navigation between pages.
 Uses Bootstrap to style every page and component.
 
 
-#Tasks expected to be completed in next week
+#Tasks expected to be completed in the next two weeks:
 Library Service which users can leave messages for administrators to answer.
+Stripe Credit Card Payments.
