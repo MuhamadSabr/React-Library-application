@@ -13,7 +13,7 @@ export const LibraryServices = ()=>{
                     <p className="lead">If you cannot find what you are looking for send our library admins a message!</p>
                     {
                         isAuthenticated ?
-                        <Link type="button" to="#" className="btn btn-primary main-color text-white btn-lg">Library Service</Link>
+                        <Link type="button" to="/messagePage" className="btn btn-primary main-color text-white btn-lg">Library Service</Link>
                         :
                         <Link type="button" to="/login" className="btn btn-primary main-color text-white btn-lg">Log In</Link>
                     }

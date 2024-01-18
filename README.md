@@ -6,5 +6,5 @@ Uses Bootstrap to style every page and component.
 
 
 #Tasks expected to be completed in the next two weeks:
-Library Service which users can leave messages for administrators to answer.
+Admin page to add/modify books.
 Stripe Credit Card Payments.

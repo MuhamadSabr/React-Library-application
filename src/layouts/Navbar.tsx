@@ -46,6 +46,12 @@ export const Navbar = ()=>{
                                 <NavLink to="/ShelfPage" className="nav-link">Shelf</NavLink>
                             </li>
                         }
+                        {
+                            isAuthenticated &&
+                            <li className="nav-itme">
+                                <NavLink to="/MessagePage" className="nav-link">Messages</NavLink>
+                            </li>
+                        }
                     </ul>
                     <ul className="navbar-nav ms-auto">
                         {

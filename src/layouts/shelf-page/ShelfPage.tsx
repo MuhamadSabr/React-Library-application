@@ -18,7 +18,7 @@ export const ShelfPage = () =>{
                 </li>
             </ul>
             <div className="tab-content">
-                <div id="nav-loans" className="container tab-pane active pe-lg-5 ps-lg-5">
+                <div id="nav-loans" className="container tab-pane fade show active pe-lg-5 ps-lg-5">
                     <LoansShelf/>
                 </div>
                 <div id="nav-history" className="container tab-pane fade pe-lg-5 ps-lg-5">

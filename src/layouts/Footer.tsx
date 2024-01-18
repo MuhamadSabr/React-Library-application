@@ -24,6 +24,12 @@ export const Footer = ()=>{
                                 <Link to="/ShelfPage" className="nav-link">Shelf</Link>
                             </li>
                         }
+                        {
+                            isAuthenticated &&
+                            <li className="nav-itme">
+                                <Link to="/MessagePage" className="nav-link">Messages</Link>
+                            </li>
+                        }
                     </ul>
                     <div className=" container border "></div>
                     <p className="d-flex justify-content-center align-items-center pt-2">@ 2023, Mmd, Inc</p>

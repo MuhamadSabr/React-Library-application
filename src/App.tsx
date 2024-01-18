@@ -10,6 +10,7 @@ import { PageNotFound } from './layouts/exceptions/PageNotFound';
 import { Logout } from './layouts/authentication/Logout';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ShelfPage } from './layouts/shelf-page/ShelfPage';
+import { MessagePage } from './layouts/messgae-page/MessagePage';
 
 
 
@@ -19,6 +20,12 @@ export const App = () => {
     const {isAuthenticated} = useAuth();
     !isAuthenticated ? sessionStorage.setItem("redirectPath", "/ShelfPage") : sessionStorage.getItem("/redirectPath");
     return isAuthenticated ? <ShelfPage /> : <Navigate to="/login" />;
+  }
+
+  const PrivateRoute2 = () => {
+    const {isAuthenticated} = useAuth();
+    !isAuthenticated ? sessionStorage.setItem("redirectPath", "/MessagePage") : sessionStorage.getItem("/redirectPath");
+    return isAuthenticated ? <MessagePage /> : <Navigate to="/login" />;
   }
 
 
@@ -34,6 +41,7 @@ export const App = () => {
             <Route path='/checkout/:bookId' element={<BookCheckoutPage/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/shelfPage' element={<PrivateRoute/>}></Route>
+            <Route path='/messagePage' element={<PrivateRoute2/>}></Route>
             <Route path='/Logout' element={<Logout/>}></Route>
             <Route path="*" element={<PageNotFound/>}></Route>
           </Routes>
