@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { getRole } from "./utils/Authenticated";
 
 export const Footer = ()=>{
 
@@ -28,6 +29,12 @@ export const Footer = ()=>{
                             isAuthenticated &&
                             <li className="nav-itme">
                                 <Link to="/MessagePage" className="nav-link">Messages</Link>
+                            </li>
+                        }
+                        {
+                            isAuthenticated && getRole()==='ROLE_ADMIN' &&
+                            <li className="nav-itme">
+                                <Link to="/ManageLibraryPage" className="nav-link">Admin</Link>
                             </li>
                         }
                     </ul>

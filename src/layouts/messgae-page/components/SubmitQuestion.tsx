@@ -56,15 +56,16 @@ export const SubmitQuestion = () =>{
             <div className="card-body">
                 {
                     displayWarning &&
-                    <div className="alert alert-warning">
-                        <strong>Failed:</strong> all fields must be filled out
+                    <div className="alert alert-warning alert-dismissible fade show">
+                        <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={()=>setDisplayWarning(false)}></button>
+                        <strong>Failed:</strong> all fields must be filled out.
                     </div>
                 }
                 {
                     displaySuccess &&
                     <div className="alert alert-success alert-dismissible fade show">
                         <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={()=>setDisplaySuccess(false)}></button>
-                        <strong>Success:</strong> message was submitted
+                        <strong>Success:</strong> message was submitted.
                     </div>
                 }
                 <label className="form-label">Title</label>

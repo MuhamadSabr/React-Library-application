@@ -70,10 +70,10 @@ export const QA = () =>{
             <h3 className="mt-2">Current Q/A({totalNumberOfMessages})</h3>
             {
                 messages.map(message=>(
-                    <div className="card mb-2" key={message.id}>
+                    <div className="card shadow mb-2" key={message.id}>
                         <div className="card-body">
                             <h6>Case #{message.id} : {message.title}</h6>
-                            <p>{message.userEmail}</p>
+                            <h5>{message.userEmail}</h5>
                             <p>{message.question}</p>
                             <hr></hr>
                             <p className="lead">Response:</p>

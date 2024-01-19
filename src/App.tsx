@@ -11,6 +11,8 @@ import { Logout } from './layouts/authentication/Logout';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ShelfPage } from './layouts/shelf-page/ShelfPage';
 import { MessagePage } from './layouts/messgae-page/MessagePage';
+import {ManageLibraryPage} from './layouts/manage-library-page/ManageLibraryPage';
+import { getRole } from './layouts/utils/Authenticated';
 
 
 
@@ -28,6 +30,14 @@ export const App = () => {
     return isAuthenticated ? <MessagePage /> : <Navigate to="/login" />;
   }
 
+  const PrivateRoute3 = () => {
+    const {isAuthenticated} = useAuth();
+    if(isAuthenticated){
+      return getRole()==='ROLE_ADMIN' ? <ManageLibraryPage /> : <Navigate to={`/${sessionStorage.getItem("redirectPath")}`} />;
+    }
+    return <Navigate to="/login" />;
+  }
+
 
   return (
     <div className='d-flex flex-column min-vh-100'>
@@ -42,6 +52,7 @@ export const App = () => {
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/shelfPage' element={<PrivateRoute/>}></Route>
             <Route path='/messagePage' element={<PrivateRoute2/>}></Route>
+            <Route path='/ManageLibraryPage' element={<PrivateRoute3/>}></Route>
             <Route path='/Logout' element={<Logout/>}></Route>
             <Route path="*" element={<PageNotFound/>}></Route>
           </Routes>

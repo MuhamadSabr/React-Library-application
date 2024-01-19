@@ -1,5 +1,5 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { authenticated } from "./utils/Authenticated";
+import { authenticated, getRole } from "./utils/Authenticated";
 import { useEffect, createContext } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -50,6 +50,12 @@ export const Navbar = ()=>{
                             isAuthenticated &&
                             <li className="nav-itme">
                                 <NavLink to="/MessagePage" className="nav-link">Messages</NavLink>
+                            </li>
+                        }
+                        {
+                            isAuthenticated && getRole()==='ROLE_ADMIN' &&
+                            <li className="nav-itme">
+                                <NavLink to="/ManageLibraryPage" className="nav-link">Admin</NavLink>
                             </li>
                         }
                     </ul>
