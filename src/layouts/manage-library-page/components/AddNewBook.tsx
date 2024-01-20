@@ -113,7 +113,7 @@ export const AddNewBook = () =>{
                     <label className="form-label">Copies</label>
                     <input type="number" required className="form-control" onChange={event=> setCopies(+event.target.value)} value={copies}></input>
                 </div>
-                <div className="col-md-3 mt-3">
+                <div className="col-md-4 mt-3">
                     <label className="form-label">Image</label>
                     <input type="file" className="form-control" onChange={toBase64}></input>
                 </div>

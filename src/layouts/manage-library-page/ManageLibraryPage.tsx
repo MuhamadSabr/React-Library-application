@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AdminMessgaes } from "./components/AdminMessages";
 import { AddNewBook } from "./components/AddNewBook";
+import { UpdateBook } from "./components/UpdateBookStatus";
 
 export const ManageLibraryPage = () =>{
 
@@ -32,7 +33,7 @@ export const ManageLibraryPage = () =>{
                 </li>
                 <li>
                     <button onClick={changeBookOnClick} className="nav-link" data-bs-toggle="tab" data-bs-target="#nav-change-book">
-                        Chagne Book
+                        Modify Book
                     </button>
                 </li>
                 <li>
@@ -46,7 +47,7 @@ export const ManageLibraryPage = () =>{
                     <AddNewBook/>
                 </div>
                 <div id="nav-change-book" className="container tab-pane fade pe-lg-5 ps-lg-5">
-                    {changeBookClick ? <p>Change book</p> : <></>}
+                    {changeBookClick ? <UpdateBook/> : <></>}
                 </div>
                 <div id="nav-message" className="container tab-pane fade pe-lg-5 ps-lg-5">
                     {messageClick ? <AdminMessgaes/> : <></>}

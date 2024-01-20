@@ -369,7 +369,7 @@ export const BookCheckoutPage = () =>{
                 reviews.length>0 ?
                 <div>
                      <div id="reviewDiv" className="row mt-4">
-                        <p className="text-info fs-4">What other readers think of this book!? <em className="text-dark">{`(${totalNumberOfReviews} reviews)`}</em></p>
+                        <p className="text-info fs-4">What other readers think of this book!? <em className="text-dark">{`(reviews(${totalNumberOfReviews}))`}</em></p>
                         {
                             reviews.slice(0,5).map(review =>(
                             <ReviewComponent review={review} key={review.id} />

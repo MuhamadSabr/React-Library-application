@@ -7,9 +7,9 @@ export class Book{
     copies?:number;
     copiesAvailable?:number;
     category?:string;
-    image?:string;
+    image?:any;
 
-    constructor(id:number, title:string, author?:string, description?:string, copies?:number, copiesAvailable?:number, category?:string, image?:string){
+    constructor(id:number, title:string, author?:string, description?:string, copies?:number, copiesAvailable?:number, category?:string, image?:any){
         this.id = id;
         this.title = title;
         this.author = author;
