@@ -23,6 +23,7 @@ export const Checkout:React.FC<{copies:number|undefined; copiesAvailable:number|
                             </div>
                             {
                                 props.isAuthenticated ?
+                                props.copiesAvailable && props.copiesAvailable >0 ?
                                 !props.isBookCheckedOutByUser ?
                                 props.currentCheckedOutBooks < 5 ?
                                 <button onClick={()=> props.checkoutBook()} className="btn btn-success">Checkout</button>
@@ -30,6 +31,8 @@ export const Checkout:React.FC<{copies:number|undefined; copiesAvailable:number|
                                 <p><b>5/5 books checked out</b></p>
                                 :
                                 <p><b>Book is Checked Out</b></p>
+                                :
+                                <button onClick={()=> props.checkoutBook()} className="btn btn-success" disabled>Checkout</button>
                                 :
                                 <Link to="/login" className="btn btn-success">Log In</Link>
                             }

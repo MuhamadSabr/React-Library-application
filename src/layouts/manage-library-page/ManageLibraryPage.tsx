@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AdminMessgaes } from "./components/AdminMessages";
+import { AddNewBook } from "./components/AddNewBook";
 
 export const ManageLibraryPage = () =>{
 
@@ -42,7 +43,7 @@ export const ManageLibraryPage = () =>{
             </ul>
             <div className="tab-content">
                 <div id="nav-add-book" className="container tab-pane fade show active pe-lg-5 ps-lg-5">
-                    <p>Add book</p>
+                    <AddNewBook/>
                 </div>
                 <div id="nav-change-book" className="container tab-pane fade pe-lg-5 ps-lg-5">
                     {changeBookClick ? <p>Change book</p> : <></>}

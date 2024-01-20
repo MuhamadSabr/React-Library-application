@@ -58,7 +58,7 @@ export const AdminMessgaes = () =>{
 
     const submitAdminResponse = async (id:number, response:string) =>{
         const adminResponse = new AdminResponseMessage(id, response);
-        const url = "http://localhost:8080/api/messages/admin/responseMessage";
+        const url = "http://localhost:8080/api/admin/responseMessage";
         const headers = new Headers();
         headers.append('Content-Type', 'Application/json');
         headers.append('Authorization', `Bearer ${getToken()}`);
