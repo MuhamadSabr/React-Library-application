@@ -32,7 +32,7 @@ export const getToken = () =>{
 
 const refreshToken = async () =>{
 
-    const url = "http://localhost:8080/refreshJwtToken";
+    const url = `${process.env.REACT_APP_API}/refreshJwtToken`;
         
     const jwtToken = getToken();
         

@@ -53,7 +53,7 @@ export const BookCheckoutPage = () =>{
 
         const fetchBook = async () =>{
 
-            const baseUrl = "http://localhost:8080/api/books";
+            const baseUrl = `${process.env.REACT_APP_API}/api/books`;
             
             let url = `${baseUrl}/${bookId}`;
 
@@ -85,7 +85,7 @@ export const BookCheckoutPage = () =>{
     
     useEffect(()=>{
 
-        const url = `http://localhost:8080/api/reviews/search/findByBookIdOrderByReviewDateDesc?bookId=${bookId}`
+        const url = `${process.env.REACT_APP_API}/api/reviews/search/findByBookIdOrderByReviewDateDesc?bookId=${bookId}`
 
         const fetchBookReview = async () =>{
 
@@ -139,7 +139,7 @@ export const BookCheckoutPage = () =>{
     useEffect(()=>{
 
         if(isAuthenticated){
-            const url = "http://localhost:8080/api/books/currentCheckedOutCountByUser";
+            const url = `${process.env.REACT_APP_API}/api/books/currentCheckedOutCountByUser`;
             const headers = new Headers();
             headers.append("Content-Type", "application/json");
             headers.append("Authorization", `Bearer ${getToken()}`);
@@ -169,7 +169,7 @@ export const BookCheckoutPage = () =>{
 
     useEffect(()=>{
         if(isAuthenticated){
-            const url = `http://localhost:8080/api/books/isCheckedOutByUser/${bookId}`;
+            const url = `${process.env.REACT_APP_API}/api/books/isCheckedOutByUser/${bookId}`;
             const headers = new Headers();
             headers.append("Content-Type", "application/json")
             headers.append("Authorization", `Bearer ${getToken()}`)
@@ -198,7 +198,7 @@ export const BookCheckoutPage = () =>{
 
     useEffect(()=>{
         if(isAuthenticated){
-            const url = `http://localhost:8080/api/reviews/hasUserLeftReview/${bookId}`;
+            const url = `${process.env.REACT_APP_API}/api/reviews/hasUserLeftReview/${bookId}`;
             const headers = new Headers();
             headers.append("Content-Type", "application/json")
             headers.append("Authorization", `Bearer ${getToken()}`)
@@ -229,7 +229,7 @@ export const BookCheckoutPage = () =>{
 
         
 
-        const url = `http://localhost:8080/api/books/checkout/${bookId}`;
+        const url = `${process.env.REACT_APP_API}/api/books/checkout/${bookId}`;
         const headers = new Headers();
         headers.append("Content-Type", "application/json")
         headers.append("Authorization", `Bearer ${getToken()}`)
@@ -250,7 +250,7 @@ export const BookCheckoutPage = () =>{
 
 
     const submitReview = async(rating:number, reviewDescription:string) =>{
-        const url = `http://localhost:8080/api/reviews/add`;
+        const url = `${process.env.REACT_APP_API}/api/reviews/add`;
         const headers = new Headers();
         headers.append("Content-Type", "application/json")
         headers.append("Authorization", `Bearer ${getToken()}`)
@@ -276,7 +276,7 @@ export const BookCheckoutPage = () =>{
 
 
     const loadReviews = async () =>{
-        const url = `http://localhost:8080/api/reviews/search/findByBookIdOrderByReviewDateDesc?bookId=${bookId}&page=${currentSetOfReviews}&size=${reviewNumberPerLoad}`;
+        const url = `${process.env.REACT_APP_API}/api/reviews/search/findByBookIdOrderByReviewDateDesc?bookId=${bookId}&page=${currentSetOfReviews}&size=${reviewNumberPerLoad}`;
 
         const fetchBookReview = async () =>{
 

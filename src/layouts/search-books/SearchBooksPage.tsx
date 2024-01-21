@@ -3,6 +3,8 @@ import {Book} from '../../models/Book';
 import { LoadingSpinner } from "../utils/LoadingSpinner";
 import { BookCard } from './BookCard';
 import {Pagination} from '../utils/pagination';
+import { Link } from 'react-router-dom';
+
 
 enum Category{
     ALL ="All", FE ="Front-End" , BE ="Back-End", DATA ="Data", DEVOPS = "Dev-Ops"
@@ -37,7 +39,8 @@ export const SearchBooksPage = ()=>{
 
         const fetchBooks = async ()=>{
 
-            const baseUrl = "http://localhost:8080/api/books";
+            const baseUrl = `${process.env.REACT_APP_API}/api/books`;
+            console.log(baseUrl);
 
             let url = '';
 
@@ -165,7 +168,7 @@ export const SearchBooksPage = ()=>{
                     { books.length===0 ?
                       <div className='container-fluid mt-3 mb-5'>
                         <p className='h3'>Can't find what you are looking for?</p>
-                        <a type='button' href='#' className='btn main-color text-white fw-bold btn-md'>Library Service</a>
+                        <Link type='button' to="/messagePage" className='btn main-color text-white fw-bold btn-md'>Library Service</Link>
                       </div> :
                       <p>{firstBookIndex +' to ' + lastBookIndex + ' of ' + totalNumberOfBooks!.toString()} items:</p>
                     }

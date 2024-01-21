@@ -27,7 +27,7 @@ export const AdminMessgaes = () =>{
 
 
     useEffect(()=>{
-        const url = `http://localhost:8080/api/messages/search/findByClosed?closed=false&page=${currentPage-1}&size=${messagesPerPage}`;
+        const url = `${process.env.REACT_APP_API}/api/messages/search/findByClosed?closed=false&page=${currentPage-1}&size=${messagesPerPage}`;
         const headers = new Headers();
         headers.append('Content-Type', 'Application/json');
         headers.append('Authorization', `Bearer ${getToken()}`);
@@ -58,7 +58,7 @@ export const AdminMessgaes = () =>{
 
     const submitAdminResponse = async (id:number, response:string) =>{
         const adminResponse = new AdminResponseMessage(id, response);
-        const url = "http://localhost:8080/api/admin/responseMessage";
+        const url = `${process.env.REACT_APP_API}/api/admin/responseMessage`;
         const headers = new Headers();
         headers.append('Content-Type', 'Application/json');
         headers.append('Authorization', `Bearer ${getToken()}`);

@@ -42,7 +42,7 @@ export const UpdateBook = () =>{
 
 
     const fetchBook = async () =>{
-        const url = `http://localhost:8080/api/books/${id}`;
+        const url = `${process.env.REACT_APP_API}/api/books/${id}`;
         fetch(url)
         .then((response) =>response.json())
         .then((response)=>{
@@ -95,7 +95,7 @@ export const UpdateBook = () =>{
         }
         else{
             const updatedBook = new Book(+id, title, author, description, copies, copiesAvailable, category, image);
-            const url = "http://localhost:8080/api/admin/updateBook";
+            const url = `${process.env.REACT_APP_API}/api/admin/updateBook`;
             const headers = new Headers();
             headers.append("Content-Type", "application/json")
             headers.append("Authorization", `Bearer ${getToken()}`)
@@ -131,7 +131,7 @@ export const UpdateBook = () =>{
 
 
     const deleteBook = async () =>{
-        const url = `http://localhost:8080/api/admin/deleteBook/${id}`;
+        const url = `${process.env.REACT_APP_API}/api/admin/deleteBook/${id}`;
         const headers = new Headers();
         headers.append("Content-Type", "application/json")
         headers.append("Authorization", `Bearer ${getToken()}`)

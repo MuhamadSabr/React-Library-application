@@ -16,7 +16,7 @@ export const SubmitQuestion = () =>{
             console.log("submitMessage was called")
         }else{
 
-            const url = `http://localhost:8080/api/messages/postMessage`;
+            const url = `${process.env.REACT_APP_API}/api/messages/postMessage`;
         const headers = new Headers();
         headers.append("Content-Type", "application/json")
         headers.append("Authorization", `Bearer ${getToken()}`)

@@ -41,7 +41,7 @@ export const AddNewBook = () =>{
         }
         else{
             const newBookToAdd = new AddBook(title, author, description, copies, category, image);
-            const url = `http://localhost:8080/api/admin/addBook`;
+            const url = `${process.env.REACT_APP_API}/api/admin/addBook`;
             const headers = new Headers();
             headers.append("Content-Type", "application/json")
             headers.append("Authorization", `Bearer ${getToken()}`)

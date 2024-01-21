@@ -21,7 +21,7 @@ export const QA = () =>{
 
     useEffect(()=>{
         if(isAuthenticated){
-            const url = `http://localhost:8080/api/messages/search/findByUserEmail?userEmail=${getUsername()}&page=${currentPage-1}&size=${numberOfQuestionsPerPage}`;
+            const url = `${process.env.REACT_APP_API}/api/messages/search/findByUserEmail?userEmail=${getUsername()}&page=${currentPage-1}&size=${numberOfQuestionsPerPage}`;
             const headers = new Headers();
             headers.append("Content-Type", "application/json");
             headers.append("Authorization", `Bearer ${getToken()}`);

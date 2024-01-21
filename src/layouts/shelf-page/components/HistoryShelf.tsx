@@ -21,7 +21,7 @@ export const HistoryShelf = () =>{
 
     useEffect(()=>{
         if(isAuthenticated){
-            const url = `http://localhost:8080/api/histories/search/findBooksByUserEmail?email=${getUsername()}&page=${currentPage-1}&size=${numberOfBooksPerPage}`;
+            const url = `${process.env.REACT_APP_API}/api/histories/search/findBooksByUserEmail?email=${getUsername()}&page=${currentPage-1}&size=${numberOfBooksPerPage}`;
             const fetchUserHistory = async() =>{
                 const headers = new Headers();
                 headers.append("Content-Type", "application/json")

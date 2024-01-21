@@ -19,7 +19,7 @@ export const LoansShelf = () =>{
     useEffect(()=>{
         if(isAuthenticated){
             const fetchUserCurrentLoans = async() =>{
-                const url = "http://localhost:8080/api/books/currentLoans";
+                const url = `${process.env.REACT_APP_API}/api/books/currentLoans`;
                 const headers = new Headers();
                 headers.append("Content-Type", "application/json")
                 headers.append("Authorization", `Bearer ${getToken()}`)
@@ -61,7 +61,7 @@ export const LoansShelf = () =>{
     }
 
     const returnBook = async(bookId:number) =>{
-        const url = `http://localhost:8080/api/books/returnCheckedOutBook/${bookId}`;
+        const url = `${process.env.REACT_APP_API}/api/books/returnCheckedOutBook/${bookId}`;
         const headers = new Headers();
         headers.append("Content-Type", "application/json")
         headers.append("Authorization", `Bearer ${getToken()}`)
@@ -84,7 +84,7 @@ export const LoansShelf = () =>{
 
 
     const renewLoan = async(bookId:number) =>{
-        const url = `http://localhost:8080/api/books/renewCheckedOutBook/${bookId}`;
+        const url = `${process.env.REACT_APP_API}/api/books/renewCheckedOutBook/${bookId}`;
         const headers = new Headers();
         headers.append("Content-Type", "application/json")
         headers.append("Authorization", `Bearer ${getToken()}`)

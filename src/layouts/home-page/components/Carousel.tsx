@@ -2,9 +2,7 @@ import {CarouselItem} from './CarouselItem';
 import {useEffect, useState} from 'react';
 import {Book} from '../../../models/Book';
 import { LoadingSpinner } from '../../utils/LoadingSpinner';
-import { Link, useNavigate } from 'react-router-dom';
-import { authenticated, getToken } from '../../utils/Authenticated';
-
+import { Link } from 'react-router-dom';
 
 
 export const Carousel = () =>{
@@ -17,7 +15,7 @@ export const Carousel = () =>{
 
         const fetchBooks = async ()=>{
 
-            const baseUrl = "http://localhost:8080/api/books";
+            const baseUrl = `${process.env.REACT_APP_API}/api/books`;
             const url     = `${baseUrl}?page=1&size=9`;
 
 

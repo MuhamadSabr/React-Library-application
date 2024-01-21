@@ -2,7 +2,6 @@ import { useState, FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { LoadingSpinner } from "../utils/LoadingSpinner";
 
 export const Login = () =>{
 
@@ -20,7 +19,7 @@ export const Login = () =>{
         
         event.preventDefault();
 
-        const url = "http://localhost:8080/login";
+        const url = `${process.env.REACT_APP_API}/login`;
         const headers = new Headers();
         headers.append('Authorization', 'Basic ' + btoa(username + ":" + password));
         headers.append("X-XSRF-TOKEN", sessionStorage.getItem("XSRF-TOKEN")!);
