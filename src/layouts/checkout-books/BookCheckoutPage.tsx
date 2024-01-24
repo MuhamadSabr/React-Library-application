@@ -13,6 +13,8 @@ import { createRoot } from "react-dom/client";
 
 export const BookCheckoutPage = () =>{
 
+    const [displayWarning, setDisplayWarning] = useState<boolean>(false);
+
     //Book State
     const [book, setBook] = useState<Book> (new Book(-1, "", "", "", -1, -1, "", ""));
     const [isLoading, setIsLoading] = useState<boolean> (true);
@@ -241,9 +243,10 @@ export const BookCheckoutPage = () =>{
         .then((resonse)=> resonse.json())
         .then((response)=>{
             setIsBookCheckedOutByUser(true);
+            setDisplayWarning(false);
         })
         .catch((error:Error)=>{
-            setHttpError("Error Checking book, because : " + error.message);
+            setDisplayWarning(true);
         })
     }
 
@@ -339,6 +342,13 @@ export const BookCheckoutPage = () =>{
 
     return(
         <div className="container p-3">
+            {
+                displayWarning &&
+                <div className="alert alert-warning alert-dismissible fade show">
+                    <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={()=>setDisplayWarning(false)}></button>
+                    <strong>Failed:</strong> Please return and/or pay late fees to be able to checkout new books.
+                </div>
+            }
             <div className="row justify-content-between">
                 <div className="col-lg-2 m-3 d-flex justify-content-center">
                     <img src={book.image ? book.image : require("../../Images/BooksImages/book-luv2code-1000.png")}

@@ -32,6 +32,12 @@ export const Footer = ()=>{
                             </li>
                         }
                         {
+                            isAuthenticated &&
+                            <li className="nav-itme">
+                                <Link to="/PaymentPage" className="nav-link">Payments</Link>
+                            </li>
+                        }
+                        {
                             isAuthenticated && getRole()==='ROLE_ADMIN' &&
                             <li className="nav-itme">
                                 <Link to="/ManageLibraryPage" className="nav-link">Admin</Link>

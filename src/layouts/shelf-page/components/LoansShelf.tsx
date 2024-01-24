@@ -126,7 +126,7 @@ export const LoansShelf = () =>{
                                     }
                                     {
                                         shelfLoan.daysLeft <=0 &&
-                                        <p className="text-danger">{shelfLoan.daysLeft} past due date</p>
+                                        <p className="text-danger">{shelfLoan.daysLeft*-1} days past due-date</p>
                                     }
                                     {
                                         shelfLoan.daysLeft >1 &&

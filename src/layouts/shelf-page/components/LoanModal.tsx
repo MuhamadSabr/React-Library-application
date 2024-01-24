@@ -34,7 +34,7 @@ export const LoanModal: React.FC<{shelfLoan:ShelfCurrentLoans; returnBook:(bookI
                                 }
                                 {
                                     props.shelfLoan.daysLeft <=0 &&
-                                    <p className="text-danger">{props.shelfLoan.daysLeft} past due date</p>
+                                    <p className="text-danger">{props.shelfLoan.daysLeft*-1} days past due-date</p>
                                 }
                                 {
                                     props.shelfLoan.daysLeft >1 &&

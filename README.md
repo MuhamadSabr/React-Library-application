@@ -4,6 +4,5 @@ Implements JWT authentication in sync with the backend server. Sends a request t
 Uses React Router to establish navigation between pages.
 It uses Bootstrap to style every page and component.
 Uses self-signed certificate to enable HTTPS communication with the backend server and be able to process payment.
+Uses stripe to accept payment from customers, in case they have late-fees to be paid which they will be charged in case of late books.
 
-#The final task, expected to be completed by the end of the week:
-Stripe Credit Card Payments.
