@@ -14,6 +14,7 @@ import { MessagePage } from './layouts/messgae-page/MessagePage';
 import {ManageLibraryPage} from './layouts/manage-library-page/ManageLibraryPage';
 import { getRole } from './layouts/utils/Authenticated';
 import { PaymentPage } from './layouts/payment-page/PaymentPage';
+import { Singup } from './layouts/authentication/Signup';
 
 
 
@@ -56,6 +57,7 @@ export const App = () => {
             <Route path='/home' element={<HomePage/>}></Route>
             <Route path='/search' element={<SearchBooksPage/>}></Route>
             <Route path='/checkout/:bookId' element={<BookCheckoutPage/>}></Route>
+            <Route path='/signup' element={<Singup/>}></Route>
             <Route path='/login' element={<Login/>}></Route>
             <Route path='/shelfPage' element={<PrivateRoute/>}></Route>
             <Route path='/messagePage' element={<PrivateRoute2/>}></Route>
